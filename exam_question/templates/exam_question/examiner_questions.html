@@ -1,0 +1,73 @@
+{% extends 'landing/base1.html' %}
+{% load static %}
+
+{% block title %}Exams in Django Ajax{% endblock %}
+
+{% block content %}
+
+    <!-- Add New Exam Form Page -->
+    <div class="container">
+        <h1>Exam Questions</h1>
+        <div class="row">
+            <div class="col-md-8 ">
+                <h3>Add New Question</h3>
+                <form id="addQuestion" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message.tags == 'error' %}
+                                    <div class="alert alert-danger" style="margin-top:10px">
+                                        {{ message }}
+                                    </div>
+                                {% endif %}
+                                {% if message.tags == 'success' %}
+                                    <div class="alert alert-success" style="margin-top:10px">{{ message }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        {% for register in registered %}
+                        <input id="{{ register.id }}" type="text" value="{{ register.subject }}">
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Question:</label>
+                        <textarea name="question" rows="5" cols="20" placeholder="Enter Your Question Here..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Option A:</label>
+                        <input class="form-control" type="text" name="option_A" placeholder="Enter option A" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Option B:</label>
+                        <input class="form-control" type="text" name="option_B" placeholder="Enter option B" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Option C:</label>
+                        <input class="form-control" type="text" name="option_C" placeholder="Enter option C" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Option D:</label>
+                        <input class="form-control" type="text" name="option_D" placeholder="Enter option D" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Correct Answer:</label>
+                        <input class="form-control" type="text" name="correct_answer" placeholder="Enter Correct Answer" maxlength="1" required>
+                    </div>
+
+                    <button id='button' class="btn btn-primary form-control" type="submit">SUBMIT QUESTION</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

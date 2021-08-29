@@ -1,0 +1,14 @@
+{% extends 'landing/base1.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Profile Update Form{{% endblock %}
+
+{% block content %}
+    <h3 style="text-transform: capitalize">Fill the form below to update your profile</h3><hr>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Update Examiner">
+    </form>
+{% endblock %}

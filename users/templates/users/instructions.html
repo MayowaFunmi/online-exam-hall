@@ -1,0 +1,24 @@
+{% extends 'landing/base1.html' %}
+
+{% block title %}Instructions To Candidates{% endblock %}
+
+{% block content %}
+    <!-- Info Box -->
+    <div class="info_box">
+        <div class="info-title"><span>Please read the following instructions carefully before proceeding to the exam hall.</span></div>
+        <ol class="info-list">
+            <li class="info">You have maximum of just <span>15 seconds</span> for each question.</li>
+            <li class="info">Once you start the exam, you must finish it. You can't attempt a subject twice.</li>
+            <li class="info">Once you select your answer, it can't be undone.You have ONLY ONE click to answer a question.</li>
+            <li class="info">You can't go back to the previous question you already answered.</li>
+            <li class="info">You can't select any option once time goes off.</li>
+            <li class="info">After the last question of each subject, make sure you click the FINISH button to submit your exam.</li>
+            <li class="info">In case you choose a wrong answer, you will see the correct answer marked afterwards.</li>
+            <li class="info">If you think you are not ready for this exam, click the EXIT button. Otherwise, click CONTINUE to enter the exam hall.</li>
+        </ol>
+        <div class="buttons">
+            <button class=" btn btn-primary"><a href="{% url 'users:candidate_detail' %}">EXIT</a></button>
+            <button class=" btn btn-primary"><a href="{% url 'student:select_subject' %}">CONTINUE</a></button>
+        </div>
+    </div>
+{% endblock content %}

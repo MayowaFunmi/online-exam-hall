@@ -1,0 +1,136 @@
+{% extends 'landing/base1.html' %}
+{% load static %}
+
+{% block title %}Select Exam Subject{% endblock %}
+
+{% block content %}
+    <h1>Select Exam Subject To Write:</h1>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_1 }}" class="btn btn-success" id="{{ registered.subject_1.id }}"><a href='#'>{{ registered.subject_1 }}</a></button><br>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_2 }}" class="btn btn-success" id="{{ registered.subject_2.id }}"><a href="#">{{ registered.subject_2 }}</a></button><br>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_3 }}" class="btn btn-success" id="{{ registered.subject_3.id }}"><a href="#">{{ registered.subject_3 }}</a></button><br>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_4 }}" class="btn btn-success" id="{{ registered.subject_4.id }}"><a href="#">{{ registered.subject_4 }}</a></button><br>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_5 }}" class="btn btn-success" id="{{ registered.subject_5.id }}"><a href="#">{{ registered.subject_5 }}</a></button><br>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_6 }}" class="btn btn-success" id="{{ registered.subject_6.id }}"><a href="#">{{ registered.subject_6 }}</a></button><br>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_7 }}" class="btn btn-success" id="{{ registered.subject_7.id }}"><a href="#">{{ registered.subject_7 }}</a></button><br>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_8 }}" class="btn btn-success" id="{{ registered.subject_8.id }}"><a href="#">{{ registered.subject_8 }}</a></button><br>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_9 }}" class="btn btn-success" id="{{ registered.subject_9.id }}"><a href="#">{{ registered.subject_9 }}</a></button><br>
+
+    <div class="list_questions">
+        <h2 id="subject"></h2>
+        <h3 id="length"></h3>
+    </div>
+    <div class="questions">
+        <form id="form">
+            {% csrf_token %}
+            <ol id="form_list">
+
+            </ol>
+
+        </form>
+    </div>
+
+    <button id='prev_btn'>Prev</button>
+    <button id='next_btn'>Next</button>
+{% endblock content %}
+
+{% block javascript %}
+<script>
+    $(document).ready(function() {
+        var id;
+        var subject;
+        var stdQuestions = new Array();
+        var add_question = $(".questions")
+        $('#prev_btn').hide()
+        $('#next_btn').hide()
+        $('button').click(function(e) {
+            e.preventDefault();
+            id = $(this).attr('id')
+            subject = $(this).attr('value');
+            $('button').siblings().hide()
+            $(this).show();
+            $('#subject').html("<p>Subject: </p>"+subject)
+            $('.list_questions').show()
+
+            $.ajax({
+                method: 'GET',
+                url: "{% url 'exam_question:student_question' %}",
+                data: {
+                    'id': id,
+                    'subject': subject,
+                },
+                dataType: 'json',
+                success: function(data) {
+                    var question = data.questions;
+                    console.log(data)
+                    console.log(question)
+                    var totalQuestion = question.length;
+                    var previousButton = document.getElementById("prev_btn");
+                    var nextButton = document.getElementById("next_btn");
+                    console.log('total questions = '+totalQuestion)
+                    function q_length() {
+                        if (question.length == 1) {
+                            $("#length").text(`There is only ${question.length} question in all`)
+                        } else if (question.length > 1){
+                            $("#length").text(`There are ${question.length} questions in all`)
+                        } else if (question.length == 0) {
+                            $("#length").text(`There is currently no question for this subject!!`)
+                        }
+                    }
+
+                    q_length()
+
+                    //display question
+                    question.forEach((q, index) => {
+                        //console.log(index)
+                        var htmlData = `
+                            <li>
+                            <h2>Question ${index+1}: ${q.question}</h2>
+                            <input type="radio" name="${q.id}" value="${q.option_A}"> ${q.option_A}<br>
+                            <input type="radio" name="${q.id}" value="${q.option_B}"> ${q.option_B}<br>
+                            <input type="radio" name="${q.id}" value="${q.option_C}"> ${q.option_C}<br>
+                            <input type="radio" name="${q.id}" value="${q.option_D}"> ${q.option_D}<br>
+                            <input type="button" value="Submit">
+                            </li>
+                        `;
+                        stdQuestions.push(htmlData)
+                        add_question.find('#form_list').html(stdQuestions.sort())
+                        //$('.questions').show()
+                        //$('input').show()
+                        //$('#prev_btn').show()
+                        //$('#next_btn').show()
+                        console.log()
+
+                        function showNext() {
+                            if ($(index) == totalQuestion-1) {
+                                $('#next_btn').hide()
+                            } else {
+                                $('#next_btn').show();
+                                $(index++)                             
+                            }
+                        }
+
+                        function showPrevious() {
+                            if ($(index) <= 2) {
+                                $('#prev_btn').hide()
+                                $(index--) 
+                            } else {
+                                $('#prev_btn').show();
+                                $(index--)                             
+                            }
+                        }
+
+                        previousButton.addEventListener("click", showPrevious);
+                        nextButton.addEventListener("click", showNext);
+                    });
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+				    console.log(textStatus);
+				    console.log(errorThrown);
+                }
+            });
+
+        })
+    })
+</script>
+{% endblock javascript %}

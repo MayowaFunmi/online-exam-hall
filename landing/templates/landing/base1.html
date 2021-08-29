@@ -1,0 +1,330 @@
+{% load static %}
+<!doctype html>
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><html lang="en" class="no-js"> <![endif]-->
+<html lang="en">
+
+    <head>
+
+        <!-- Basic -->
+        <title>{% block title %}Mayor Online Exam | Home{% endblock %}</title>
+
+        <!-- Define Charset -->
+        <meta charset="utf-8">
+
+        <!-- Responsive Metatag -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <!-- Page Description and Author -->
+        <meta name="description" content="Online Exam Hall | CBT With Ease">
+        <meta name="author" content="Akinade Mayowa">
+
+        <!-- Bootstrap CSS  -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{% static 'asset/css/style.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
+        <link href="{% static 'fontawesome_free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+    </head>
+
+    <body>
+
+        <header class="clearfix">
+
+            <!-- Start Top Bar -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="top-bar">
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <!-- Start Contact Info -->
+                                    <ul class="contact-details">
+                                        <li><a href="#"><i class="fa fa-phone"></i> +234 8187669362</a>
+                                        </li>
+                                        <li><a href="#"><i class="fa fa-phone"></i> +234 9032055129</a>
+                                        </li>
+                                        <li><a href="#"><i class="fa fa-envelope"></i> akinade.mayowa@gmail.com</a>
+                                        </li>
+                                    </ul>
+                                    <!-- End Contact Info -->
+                                </div><!-- .col-md-6 -->
+
+                                <div class="col-md-6">
+                                    <!-- Start Social Links -->
+                                    <ul class="social-list">
+                                        <li>
+                                            <a href="https://www.facebook.com/akinademayowa"><i class="fab fa-facebook"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.facebook.com/mayowaakinade"><i class="fab fa-twitter"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.linkedin.com/in/mayowa-akinade-799582105"><i class="fab fa-linkedin"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fab fa-whatsapp-square"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fab fa-telegram"></i></a>
+                                        </li>
+                                    </ul>
+                                    <!-- End Social Links -->
+                                </div><!-- .col-md-6 -->
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div><!-- .row -->
+            </div><!-- .container -->
+            <!-- End Top Bar -->
+
+            <!-- Start  Logo & Naviagtion  -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container">
+                    <a class="navbar-brand" href="{% url 'landing:home' %}">Online Examination Hall</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon">
+                            <i class="fa fa-bars"></i>
+                        </span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{% url 'landing:home' %}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'landing:members' %}">Team Members</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'landing:about' %}">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'landing:contact' %}">Contact</a>
+                            </li>
+
+                            {% if user.is_authenticated %}
+                                <li class="nav-item">Welcome! <br>{{ user.username }}</li>
+                                {% if request.user.status == 'candidate' %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'users:candidate_detail' %}">Your Profile</a>
+                                    </li>
+                                {% elif request.user.status == 'examiner' %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'users:examiner_detail' %}">Your Profile</a>
+                                    </li>
+                                {% elif request.user.is_staff %}
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            {{ user.username }}<br>(Admin)
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                            <li><a class="dropdown-item" href="{% url 'exams:add_department' %}">Add Departments</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'exams:add_subject' %}">Add Subjects</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'exams:add_student_class' %}"">Add Student Class</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'exams:add_student_level' %}"">Add Student Level</a></li>
+                                        </ul>
+                                    </li>
+
+
+                                {% endif %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Change Password</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Reset Password</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'users:logout' %}">Log Out</a>
+                                </li>
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'users:signup' %}">Sign Up</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'users:login' %}">Log In</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- End Header Logo & Naviagtion -->
+
+        </header>
+
+
+        <!-- Start Header Section -->
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="banner">
+                        <div class="overlay">
+                            <div class="intro-text">
+                                <h1>Welcome To <br><span>Mayor Online Exam/Quiz Hall</span></h1>
+                                <p style="text-transform: capitalize;">
+                                    The platform for conducting and writing examination with ease<br>
+                                    Register for all secondary school subjects, including mathematics, english language, science subjects, commercial and arts / humanities.
+                                </p>
+                                <!--<a href="{% url 'landing:instruction' %}" class="page-scroll btn btn-primary">Read More</a>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        </div>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="{% static 'images/carousel/exam_students.jpg' %}" class="d-block w-100" alt="Students inside exam hall">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>School Administrators</h5>
+                                    <p>Create Exams/Quiz Questions For your Students To Write</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'images/carousel/exam_hall.jpg' %}" class="d-block w-100" alt="Students inside exam hall">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>Students</h5>
+                                    <p>Write Exams Comfortably On Any Subject(s) Of Your Choice And Get Your Results Instantly</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'images/carousel/students.jpg' %}" class="d-block w-100" alt="Students inside exam hall">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>Administrators</h5>
+                                    <p>Present Certificate Of Participation And Merit To All Students</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
+                    <div>
+                        {% block content %}
+                        <div class="description">
+                        <h2>
+                            On this website, we offer the following services:
+                            <ul>
+                                <li>Signup Either As An Examiner Or A Candidate.</li>
+                                <li>As an examiner, you can provide exam questions based on your area of specialization.</li>
+                                <li>As a candidate, you can register for any examination subject of your choice.</li>
+                            </ul>
+
+                        </h2>
+                        <h3 style="text-decoration: underline; text-align: center;">Important Notice</h3>
+                        <p style="color: red; text-transform: capitalize;">
+                            To use this site, you will need to SIGN UP first, then LOG IN using your username and password.<br>
+                            Once you log in, you will be required to UPDATE YOUR PROFILE. Fill in all necessary personal details in the form provided.<br>
+                            You will be assigned a unique identification number, save this number as you'll need later on.
+                        </p>
+
+                    </div>
+                        {% endblock content %}
+
+                        {% block exam_details %}
+                        {% endblock exam_details %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Header Section -->
+
+        <!-- Start Client Section -->
+
+        <!-- End Client Section -->
+
+
+
+        <!-- Start Footer Section -->
+        <section id="footer-section" class="footer-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="section-heading-2">
+                            <h3 class="section-title">
+                                <span>Office Address</span>
+                            </h3>
+                        </div>
+
+                        <div class="footer-address">
+                            <ul>
+                                <li class="footer-contact"><i class="fa fa-home"></i>58, Onibuore Area, Off Monatan-Iyana Church Road, Monatan Ibadan</li>
+                                <li class="footer-contact"><i class="fa fa-envelope"></i>akinade.mayowa@gmail.com</li>
+                                <li class="footer-contact"><i class="fa fa-phone"></i>+234 8187669362</li>
+                                <li class="footer-contact"><i class="fa fa-globe"></i><a href="https://www.linkedin.com/in/mayowa-akinade-799582105" target="_blank">LinkedIn Page</a></li>
+                            </ul>
+                        </div>
+                    </div><!--/.col-md-3 -->
+
+
+                    <div class="col-md-6">
+                        <div class="section-heading-2">
+                            <h3 class="section-title">
+                                <span>Home Address</span>
+                            </h3>
+                        </div>
+
+                        <div class="footer-address">
+                            <ul>
+                                <li class="footer-contact"><i class="fa fa-home"></i>12, Opeyemi Ajagba Street, Wakajaye Iyana Church, Ibadan</li>
+                                <li class="footer-contact"><i class="fa fa-envelope"></i>akinade.mayowa@gmail.com</li>
+                                <li class="footer-contact"><i class="fa fa-phone"></i>+234 8187669362</li>
+                                <li class="footer-contact"><i class="fa fa-globe"></i><a href="https://www.facebook.com/mayowaakinade" target="_blank">Facebook Page</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div><!--/.row -->
+            </div><!-- /.container -->
+        </section>
+        <!-- End Footer Section -->
+
+        <!-- Start CCopyright Section -->
+        <div id="copyright-section" class="copyright-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="copyright">
+                            Copyright © <script>
+                                var CurrentYear = new Date().getFullYear()
+                                document.write(CurrentYear)
+                            </script>.<br>
+                            Design and Developed by <a href="http://github.com/MayowaFunmi">Akinade Mayowa</a><br>
+                            08187669362, 09032055129<br>
+                            akinade.mayowa@gmail.com<br>
+                            All Rights Reserved.
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /.container -->
+        </div>
+        <!-- End CCopyright Section -->
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+        <script src="{% static 'fontawesome_free/js/all.min.js' %}"></script>
+
+        {% block javascript %}
+        {% endblock javascript %}
+    </body>
+</html>

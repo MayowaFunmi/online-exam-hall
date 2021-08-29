@@ -1,0 +1,29 @@
+{% extends 'landing/base1.html' %}
+
+{% block title %}View All Department{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>List Of All Available Departments:</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">S/N</th>
+                    <th scope="col">Admin/Creator</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Date/Time Added</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dept in depts %}
+                    <tr>
+                        <th scope="row">{{ dept.id }}</th>
+                        <td>{{ dept.admin }}</td>
+                        <td>{{ dept.department }}</td>
+                        <td>{{ dept.created_at }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

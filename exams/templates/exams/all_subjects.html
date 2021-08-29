@@ -1,0 +1,35 @@
+{% extends 'landing/base1.html' %}
+
+{% block title %}View All Subjects{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>List Of All Available Subjects:({{ subjects.count }})</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">S/N</th>
+                    <th scope="col">Admin/Creator</th>
+                    <th scope="col">Subject Name</th>
+                    <th scope="col">Subject Code</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Date/Time Added</th>
+                    <th scope="col-2">Option</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subject in subjects %}
+                    <tr>
+                        <th scope="row">{{ subject.id }}</th>
+                        <td>{{ subject.admin }}</td>
+                        <td>{{ subject.subject_name }}</td>
+                        <td>{{ subject.subject_code }}</td>
+                        <td>{{ subject.department }}</td>
+                        <td>{{ subject.created_at }}</td>
+                        <td><button>Edit/Delete</button></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

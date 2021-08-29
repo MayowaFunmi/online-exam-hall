@@ -1,0 +1,36 @@
+{% extends 'landing/base1.html' %}
+
+{% block title %}Candidate Details{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>
+            You are about to be redirected to the exam registration page.<br>
+            You will be required to choose MAXIMUM OF NINE (9) subjects. Any number more than nine will cause your application to be rejected.<br>
+        </h2>
+        <p>The table below shows all available subjects and their respective departments:</p>
+        <div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">S/N</th>
+                        <th scope="col">Subject Name</th>
+                        <th scope="col">Subject Code</th>
+                        <th scope="col">Department</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for subject in subjects %}
+                        <tr>
+                            <th scope="row">{{ subject.id }}</th>
+                            <td>{{ subject.subject_name }}</td>
+                            <td>{{ subject.subject_code }}</td>
+                            <td>{{ subject.department }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p>Click <a href="{% url 'exams:register_exam' %}">HERE</a> to go to the exam registration page.</p>
+    </div>
+{% endblock content %}

@@ -1,0 +1,43 @@
+{% extends 'landing/base1.html' %}
+
+{% block title %}Candidate Details{% endblock %}
+
+{% block content %}
+    <div class="form-group">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                    <div class="alert alert-danger" style="margin-top:10px">{{ message }}</div>
+                {% endif %}
+                {% if message.tags == 'success' %}
+                    <div class="alert alert-success" style="margin-top:10px">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+    <h3>Your Profile Details Is As Follows:</h3>
+    <div>
+        <div style="float: right; ">
+            <img src="{{ profile_pic.url }}" style="width: 200px; height: 200px; border-radius: 20px; border: 1px solid red;" alt="No Post Image"><br>
+        </div>
+        Status: {{ status }}<br>
+        Unique ID: {{ unique_id }}<br>
+        Middle Name: {{ middle_name }}<br>
+        Username: {{ username }}<br>
+        Gender: {{ gender }}<br>
+        Date of Birth: {{ dob }}<br>
+        Age: {{ age }}<br>
+        Religion: {{ religion }}<br>
+        Phone Number: {{ phone_num }}<br>
+        Email: {{ email }}<br>
+        height: {{ height }}<br>
+        Hobbies: {{ hobbies }}<br>
+        About You: {{ about_me }}
+    </div>
+
+    <h2>Click <a href="{% url 'users:update_candidate' %}">HERE</a> to update your profile</h2>
+    <p>Register for examination <a href="{% url 'exams:check_register_exam' %}">HERE</a></p>
+    <p>Take Exams <a href="{% url 'users:candidate_instructions' %}">HERE</a></p>
+{% endblock content %}
+
+<!-- register_exam -->

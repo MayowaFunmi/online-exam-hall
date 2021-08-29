@@ -1,0 +1,45 @@
+<div class="navbar navbar-default navbar-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <!-- Stat Toggle Nav Link For Mobiles -->
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <!-- End Toggle Nav Link For Mobiles -->
+                        <a class="navbar-brand" href="{% url 'landing:home' %}">Online Exam And Quiz</a>
+                    </div>
+                    <div class="navbar-collapse collapse">
+
+                        <!-- Start Navigation List -->
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a class="active" href="{% url 'landing:home' %}">Home</a>
+                            </li>
+
+                            <li>
+                                <a href="{% url 'landing:members' %}">Team Members</a>
+                            </li>
+
+                            <li><a href="{% url 'landing:about' %}">About Us</a></li>
+
+                            <li><a href="{% url 'landing:contact' %}">Contact</a></li>
+
+                            {% if user.is_authenticated %}
+                                <li>Welcome! <br>{{ user.username }}</li>
+                                {% if request.user.status == 'candidate' %}
+                                    <li><a href="{% url 'users:candidate_detail' %}">Your Profile</a></li>
+                                {% elif request.user.status == 'examiner' %}
+                                    <li><a href="{% url 'users:examiner_detail' %}">Your Profile</a></li>
+                                {% endif %}
+                                <li><a href="#">Change Password</a></li>
+                                <li><a href="#">Reset Password</a></li>
+                                <li><a href="{% url 'users:logout' %}">Log Out</a></li>
+                            {% else %}
+                                <li><a href="{% url 'users:signup' %}">Sign Up</a></li>
+                                <li><a href="{% url 'users:login' %}">Log In</a></li>
+                            {% endif %}
+                        </ul>
+                        <!-- End Navigation List -->
+                    </div>
+                </div>
+            </div>

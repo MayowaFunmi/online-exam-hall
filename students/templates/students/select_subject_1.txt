@@ -1,0 +1,154 @@
+{% extends 'landing/base1.html' %}
+{% load static %}
+
+{% block title %}Select Exam Subject{% endblock %}
+
+{% block content %}
+    <h1>Select Exam Subject To Write:</h1>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_1 }}" class="btn btn-success" id="{{ registered.subject_1.id }}"><a href='#'>{{ registered.subject_1 }}</a></button><br>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_2 }}" class="btn btn-success" id="{{ registered.subject_2.id }}"><a href="#">{{ registered.subject_2 }}</a></button><br>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_3 }}" class="btn btn-success" id="{{ registered.subject_3.id }}"><a href="#">{{ registered.subject_3 }}</a></button><br>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_4 }}" class="btn btn-success" id="{{ registered.subject_4.id }}"><a href="#">{{ registered.subject_4 }}</a></button><br>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_5 }}" class="btn btn-success" id="{{ registered.subject_5.id }}"><a href="#">{{ registered.subject_5 }}</a></button><br>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_6 }}" class="btn btn-success" id="{{ registered.subject_6.id }}"><a href="#">{{ registered.subject_6 }}</a></button><br>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_7 }}" class="btn btn-success" id="{{ registered.subject_7.id }}"><a href="#">{{ registered.subject_7 }}</a></button><br>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_8 }}" class="btn btn-success" id="{{ registered.subject_8.id }}"><a href="#">{{ registered.subject_8 }}</a></button><br>
+    <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_9 }}" class="btn btn-success" id="{{ registered.subject_9.id }}"><a href="#">{{ registered.subject_9 }}</a></button><br>
+
+    <div class="list_questions">
+        <h2 id="subject"></h2>
+        <h3 id="length"></h3>
+    </div>
+    <div class="questions">
+        <form id="form">
+            {% csrf_token %}
+
+        </form>
+    </div>
+
+    <button id='previous'>Prev</button>
+    <button id='next'>Next</button>
+    <button id="submit">Submit</button>
+
+{% endblock content %}
+
+{% block javascript %}
+<script>
+    $(document).ready(function() {
+        var id;
+        var subject;
+        var stdQuestions = new Array();
+        var add_question = $(".questions")
+        $('#prev_btn').hide()
+        $('#next_btn').hide()
+        $('button').click(function(e) {
+            e.preventDefault();
+            id = $(this).attr('id')
+            subject = $(this).attr('value');
+            $('button').siblings().hide()
+            $(this).show();
+            $('#subject').html("<p>Subject: </p>"+subject)
+            $('.list_questions').show()
+
+            $.ajax({
+                method: 'GET',
+                url: "{% url 'exam_question:student_question' %}",
+                data: {
+                    'id': id,
+                    'subject': subject,
+                },
+                dataType: 'json',
+                success: function(data) {
+                    question = data.questions;
+
+                    function buildQuiz() {
+                        function q_length() {
+                            if (question.length == 1) {
+                                $("#length").text(`There is only ${question.length} question in all`)
+                            } else if (question.length > 1){
+                                $("#length").text(`There are ${question.length} questions in all`)
+                            } else if (question.length == 0) {
+                                $("#length").text(`There is currently no question for this subject!!`)
+                            }
+                        };
+
+                        q_length()
+
+                        $.each(question, function(index, q) {
+                            var htmlData = `
+                                <div class='slide'>
+                                    <div class='question'>
+                                        <h2>Question: ${q.question}</h2>
+                                    </div>
+
+                                    <div class='answers'>
+                                        <input type="radio" name="${q.id}" value="${q.option_A}"> ${q.option_A}<br>
+                                        <input type="radio" name="${q.id}" value="${q.option_B}"> ${q.option_B}<br>
+                                        <input type="radio" name="${q.id}" value="${q.option_C}"> ${q.option_C}<br>
+                                        <input type="radio" name="${q.id}" value="${q.option_D}"> ${q.option_D}<br>
+                                    </div>
+                                </div>
+                            `;
+                            stdQuestions.push(htmlData)
+                            add_question.find('#form').html(stdQuestions.sort())
+                            $('.questions').show()
+                            $('input').show()
+                            $('#prev_btn').show()
+                            $('#next_btn').show()
+                        });
+                    }
+
+                    function showSlide(n) {
+                        slides[currentSlide].classList.remove('active-slide');
+                        slides[n].classList.add('active-slide');
+                        currentSlide = n;
+                        if (currentSlide === 0) {
+                            previousButton.style.display = 'none'
+                        } else {
+                            previousButton.style.display = 'inline-block';
+                        }
+                        if (currentSlide === slides.length-1) {
+                            nextButton.style.display = 'none';
+                            submitButton.style.display = 'inline-block';
+                        } else {
+                            nextButton.style.display = 'inline-block';
+                            submitButton.style.display = 'none';
+                        }
+                    }
+
+                    function showNextSlide() {
+                        showSlide(currentSlide + 1)
+                    }
+
+                    function showPreviousSlide() {
+                        showSlide(currentSlide - 1);
+                    }
+
+                    buildQuiz()
+
+                    // Pagination
+                    const submitButton = document.getElementById('submit');
+                    const previousButton = document.getElementById("previous");
+                    const nextButton = document.getElementById("next");
+                    const slides = document.querySelectorAll(".slide");
+                    let currentSlide = 0;
+
+                    // Show the first slide
+                    showSlide(currentSlide);
+
+                    // Event listeners
+                    //submitButton.addEventListener('click', showResults);
+                    previousButton.addEventListener("click", showPreviousSlide);
+                    nextButton.addEventListener("click", showNextSlide);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+				    console.log(textStatus);
+				    console.log(errorThrown);
+                }
+            });
+
+        })
+    })
+</script>
+{% endblock javascript %}

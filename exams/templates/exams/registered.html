@@ -1,0 +1,12 @@
+{% extends 'landing/base1.html' %}
+
+{% block title %}Candidate Details{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>
+            You have already registered for examinations<br>
+            <p>Click <a href="{% url 'student:select_subject' %}">HERE</a> to select examination to write</p>
+        </h2>
+    </div>
+{% endblock content %}

@@ -1,0 +1,549 @@
+{% extends 'landing/base1.html' %}
+{% load static %}
+
+{% block title %}Select Exam Subject{% endblock %}
+
+{% block content %}
+    <h1>Select Exam Subject To Write:</h1>
+
+    <!-- Start Calculator -->
+    <!-- Button trigger modal -->
+    <button id="calc_btn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Need A Calculator?
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title" id="staticBackdropLabel">Scientific Calculator</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="main">
+                        <p align="right" id="info"><b>RAD</b></p>
+                        <form name="form" class="calc_form">
+                            <input name="textinput" class="textinput" />
+                        </form>
+
+                        <table class="table" id="calc_table">
+                            <tbody>
+                            <tr>
+                                <td><button onclick="clean()">C</button></td>
+                                <td><button onclick="back()">DEL</button></td>
+                                <td><button onclick="insert('+')">+</button></td>
+                                <td><button onclick="insert('-')">-</button></td>
+                                <td><button onclick="calc_sin()">sin</button></td>
+                                <td><button onclick="insert('**')">^</button></td>
+                                <td rowspan='2'><button onclick="calc_exp()">exp</button></td>
+                            </tr>
+                            <tr>
+                                <td><button onclick="insert(1)">1</button></td>
+                                <td><button onclick="insert(2)">2</button></td>
+                                <td><button onclick="insert(3)">3</button></td>
+                                <td><button onclick="insert('*')">*</button></td>
+                                <td><button onclick="calc_cos()">cos</button></td>
+                                <td><button id="deg" onclick="calc_deg()">deg</button></td>
+                            </tr>
+                            <tr>
+                                <td><button onclick="insert(4)">4</button></td>
+                                <td><button onclick="insert(5)">5</button></td>
+                                <td><button onclick="insert(6)">6</button></td>
+                                <td><button onclick="insert('/')">/</button></td>
+                                <td><button onclick="calc_tan()">tan</button></td>
+                                <td><button id="rad" style="border: solid red;" onclick="calc_rad()">rad</button></td>
+                            </tr>
+                            <tr>
+                                <td><button onclick="insert(7)">7</button></td>
+                                <td><button onclick="insert(8)">8</button></td>
+                                <td><button onclick="insert(9)">9</button></td>
+                                <td><button onclick="calc_sqrt()">sqrt</button></td>
+                                <td><button onclick="insert('(')">(</button></td>
+                                <td rowspan='2'><button onclick="calc_log()">ln</button></td>
+                                <td rowspan='2'><button onclick="calculate()">=</button></td>
+                            </tr>
+                            <tr>
+                                <td colspan=2><button onclick="insert(0)">0</button></td>
+                                <td><button onclick="insert('.')">.</button></td>
+                                <td><button onclick="calc_percent()">%</button></td>
+                                <td><button onclick="insert(')')">)</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Calculator -->
+    <div class="question_btns">
+        <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_1 }}" class="btn btn-success" id="subject_1"><a style="color: white;" href='#'>{{ registered.subject_1 }}</a></button><br>
+        <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_2 }}" class="btn btn-success" id="subject_2"><a style="color: white;" href="#">{{ registered.subject_2 }}</a></button><br>
+        <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_3 }}" class="btn btn-success" id="subject_3"><a style="color: white;" href="#">{{ registered.subject_3 }}</a></button><br>
+        <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_4 }}" class="btn btn-success" id="subject_4"><a style="color: white;" href="#">{{ registered.subject_4 }}</a></button><br>
+        <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_5 }}" class="btn btn-success" id="subject_5"><a style="color: white;" href="#">{{ registered.subject_5 }}</a></button><br>
+        <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_6 }}" class="btn btn-success" id="subject_6"><a style="color: white;" href="#">{{ registered.subject_6 }}</a></button><br>
+        <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_7 }}" class="btn btn-success" id="subject_7"><a style="color: white;" href="#">{{ registered.subject_7 }}</a></button><br>
+        <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_8 }}" class="btn btn-success" id="subject_8"><a style="color: white;" href="#">{{ registered.subject_8 }}</a></button><br>
+        <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_9 }}" class="btn btn-success" id="subject_9"><a style="color: white;" href="#">{{ registered.subject_9 }}</a></button><br>
+    </div>
+    <hr>
+    <div class="answered">
+        <h3>Click any subject below to view your score in the subject.</h3>
+        <small>Note: After each click, refresh the page before another click.</small>
+        <div class="questions_answered">
+
+        </div>
+    </div>
+    
+    <div class="list_questions">
+        <p id="subject"></p>
+        <h3 id="length"></h3>
+    </div>
+
+    <div class="questions">
+        <header>
+            <div class="title">One Question At A Time</div>
+            <div class="timer">
+                <div class="time_left_txt">Time Left</div>
+                <div class="timer_sec">15</div>
+            </div>
+            <div class="time_line"></div>
+            <hr>
+        </header>
+        <form id="form">
+            {% csrf_token %}
+            <div class="que_num"></div>
+            <div class="que_text">
+                
+            </div>
+            <div class="option_list">
+                
+            </div>
+
+        </form>
+    </div>
+
+    <footer>
+        <div class="total_que">
+
+        </div>
+        <button class="btn btn-primary next_btn">Next Question</button>
+    </footer>
+
+    <!-- Result Box -->
+    <div class="result_box">
+        <div class="icon">
+            <i class="fas fa-crown"></i>
+        </div>
+        <div class="complete_text">Congratulations! You've completed the exam. Click FINISH button below to Save Your Answers.</div>
+        <div class="score_text">
+            <!-- Here I've inserted Score Result from JavaScript -->
+        </div>
+        <div class="buttons">
+            <button class="btn btn-primary quit">FINISH</button>
+        </div>
+    </div>
+
+    <div>
+        Your Location:
+        <h3 id="location"></h3> 
+        Latitude: <h3 id="latitude"></h3>
+        Longitude: <h3 id="longitude"></h3>
+    </div>
+{% endblock content %}
+
+{% block javascript %}
+<script src="{% static 'js/calculator.js' %}"></script>
+<script>
+    // count number of clicks on each button
+    $(document).ready(function() {
+        var id;
+        var subject;
+        var stdQuestions = new Array();
+        var add_question = $(".questions")
+        $('footer').hide()
+        $('.result_box').hide()
+        $('.time_line').hide()
+        $('.info_box').hide()
+        $('.questions').hide();
+
+        // separate answered questions from unanswered
+        $.ajax({
+            method: 'GET',
+            url: "{% url 'exam_question:subject_answered' %}",
+            dataType: 'json',
+            success: function(data) {
+                var student_details = data.score_details;
+                var subject_list = [];
+                var subject_score = [];
+                student_details.map(x => {
+                    subject_list.push(x.sub)
+                    subject_score.push([x.name, x.sub, x.student_score])
+                })
+
+                for (var i=0; i<subject_list.length; i++) {
+                    if (subject_list[i] == $('button#subject_1').val()) {
+                        $('button#subject_1').hide()
+                        $('.answered .questions_answered').append(`
+                            <div id='my_score'>
+                                <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_1 }}" class="btn btn-success" id="subject_1"><a style="color: white;" href="#">{{ registered.subject_1 }}</a></button>
+                                <h2></h2>
+                            </div>
+                        `)
+                    } else if (subject_list[i] == $('button#subject_2').val()) {
+                        $('button#subject_2').hide()
+                        $('.answered .questions_answered').append(`
+                            <div id='my_score'>
+                                <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_2 }}" class="btn btn-success" id="subject_2"><a style="color: white;" href="#">{{ registered.subject_2 }}</a></button>
+                                <h2></h2>
+                            </div>
+                        `)
+                    } else if (subject_list[i] == $('button#subject_3').val()) {
+                        $('button#subject_3').hide()
+                        $('.answered .questions_answered').append(`
+                            <div id='my_score'>
+                                <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_3 }}" class="btn btn-success" id="subject_3"><a style="color: white;" href="#">{{ registered.subject_3 }}</a></button>
+                                <h2></h2>
+                            </div>
+                        `)
+                    } else if (subject_list[i] == $('button#subject_4').val()) {
+                        $('button#subject_4').hide()
+                        $('.answered .questions_answered').append(`
+                            <div id='my_score'>
+                                <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_4 }}" class="btn btn-success" id="subject_4"><a style="color: white;" href="#">{{ registered.subject_4 }}</a></button>
+                                <h2></h2>
+                            </div>
+                        `)
+                    } else if (subject_list[i] == $('button#subject_5').val()) {
+                        $('button#subject_5').hide()
+                        $('.answered .questions_answered').append(`
+                            <div id='my_score'>
+                                <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_5 }}" class="btn btn-success" id="subject_5"><a style="color: white;" href="#">{{ registered.subject_5 }}</a></button>
+                                <h2></h2>
+                            </div>
+                        `)
+                    } else if (subject_list[i] == $('button#subject_6').val()) {
+                        $('button#subject_6').hide()
+                        $('.answered .questions_answered').append(`
+                            <div id='my_score'>
+                                <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_6 }}" class="btn btn-success" id="subject_6"><a style="color: white;" href="#">{{ registered.subject_6 }}</a></button>
+                                <h2></h2>
+                            </div>
+                        `)
+                    } else if (subject_list[i] == $('button#subject_7').val()) {
+                        $('button#subject_7').hide()
+                        $('.answered .questions_answered').append(`
+                            <div id='my_score'>
+                                <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_7 }}" class="btn btn-success" id="subject_7"><a style="color: white;" href="#">{{ registered.subject_7 }}</a></button>
+                                <h2></h2>
+                            </div>
+                        `)
+                    } else if (subject_list[i] == $('button#subject_8').val()) {
+                        $('button#subject_8').hide()
+                        $('.answered .questions_answered').append(`
+                            <div id='my_score'>
+                                <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_8 }}" class="btn btn-success" id="subject_8"><a style="color: white;" href="#">{{ registered.subject_8 }}</a></button>
+                                <h2></h2>
+                            </div>
+                        `)
+                    } else if (subject_list[i] == $('button#subject_9').val()) {
+                        $('button#subject_9').hide()
+                        $('.answered .questions_answered').append(`
+                            <div id='my_score'>
+                                <button type="button" style="margin-bottom: 15px;" value="{{ registered.subject_9 }}" class="btn btn-success" id="subject_9"><a style="color: white;" href="#">{{ registered.subject_9 }}</a></button>
+                                <h2></h2>
+                            </div>
+                        `)
+                    }
+                };
+                $('.questions_answered button').click(function(e) {
+                    e.preventDefault()
+                    //console.log($(this).attr('value'))
+                    for (var i=0; i<subject_score.length; i++) {
+                        if ((subject_score[i][1]) == $(this).attr('value')) {
+                            $('#my_score').append('You Scored'+' '+'<b>'+subject_score[i][2][2]+'</b>'+ 'in '+$(this).attr('value'))
+                        }
+                    }
+                })
+                
+            },
+        });
+
+        $('.question_btns button').click(function(e) {
+            e.preventDefault();
+            id = $(this).attr('id')
+            subject = $(this).attr('value');
+            $('.question_btns').hide();
+            $(this).show();
+            $('#subject').append("Subject: "+subject)
+
+            $.ajax({
+                method: 'GET',
+                url: "{% url 'exam_question:student_question' %}",
+                data: {
+                    'id': id,
+                    'subject': subject,
+                },
+                dataType: 'json',
+                success: function(data) {
+                    var question = data.questions;
+                    var totalQuestion = question.length;
+                    const questions_box = document.querySelector(".questions");
+                    const form_box = questions_box.querySelector('#form');
+                    const timeCount = document.querySelector(".timer .timer_sec");
+                    const option_list = form_box.querySelector('.option_list');
+                    const next_btn = document.querySelector("footer .next_btn");
+                    const time_line = document.querySelector("header .time_line");
+                    const bottom_ques_counter = document.querySelector("footer .total_que");
+                    const timeText = document.querySelector(".timer .time_left_txt");
+                    const result_box = document.querySelector(".result_box");
+                    const quit_quiz = result_box.querySelector(".buttons .quit");
+                    let timeValue =  15;
+                    let que_count = 0;
+                    let que_numb = 1;
+                    let userScore = 0;
+                    let counter;
+                    let counterLine;
+                    let widthValue = 0;
+                    q_length();
+                    showQuestions(0);
+                    queCounter(1);
+                    startTimer(15);
+                    //startTimerLine(0);
+
+                    
+                    function q_length() {
+                        if (question.length == 1) {
+                            $("#length").text(`There is only ${question.length} question in all`)
+                        } else if (question.length > 1){
+                            $("#length").text(`There are ${question.length} questions in all`)
+                        } else if (question.length == 0) {
+                            $("#length").text(`There is currently no question for this subject!!`)
+                        }
+                    }
+
+                    // if quitQuiz button clicked
+                    quit_quiz.onclick = ()=>{
+                        $.ajax({
+                            url: "{% url 'exam_question:save_answer' %}",
+                            data: {
+                                'id': id,
+                                'score': userScore,
+                                'subject': subject
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+
+                            }
+                        })
+                        window.location.reload(); //reload the current window
+                    }
+
+                    function saveScore() {
+                        
+                    }
+
+                    // if Next Que button clicked
+                    next_btn.onclick = ()=>{
+                        $('.result_box').hide()
+                        if(que_count < question.length - 1){ //if question count is less than total question length
+                            que_count++; //increment the que_count value
+                            que_numb++; //increment the que_numb value
+                            showQuestions(que_count); //calling showQestions function
+                            queCounter(que_numb); //passing que_numb value to queCounter
+                            clearInterval(counter); //clear counter
+                            clearInterval(counterLine); //clear counterLine
+                            startTimer(timeValue); //calling startTimer function
+                            startTimerLine(widthValue); //calling startTimerLine function
+                            timeText.textContent = "Time Left"; //change the timeText to Time Left
+                            $('footer').hide();
+                        }else{
+                            clearInterval(counter); //clear counter
+                            clearInterval(counterLine); //clear counterLine
+                            showResult(); //calling showResult function
+                        }
+                    }
+
+                    function showQuestions(index) {
+                        $('.result_box').hide()
+                        const que_text_list = form_box.querySelector('.que_text');
+                        const que_num = form_box.querySelector('.que_num');
+
+                        let que_tag = '<span>'+question[index].question+'</span>'+'<br>';
+                        let option_tag = '<div class="option"><span>'+question[index].option_A+'</span></div>'
+                        +'<div class="option"><span>'+question[index].option_B+'</span></div>'
+                        +'<div class="option"><span>'+question[index].option_C+'</span></div>'
+                        +'<div class="option"><span>'+question[index].option_D+'</span></div>';
+
+                        //que_num.innerHTML = '<h4>Question '+ index+1 +'</h4>'
+                        que_num.innerHTML = `<h4>Question ${index+1}</h4>`
+
+                        que_text_list.innerHTML = que_tag;
+                        option_list.innerHTML = option_tag;
+                        $('.questions').show();
+                        $('.option').click(function () {
+                            $(this).on('click', optionSelected(this))
+                        })
+                    }
+
+                    // creating the new div tags which for icons
+                    let tickIconTag = '<div class="icon tick"><i class="fas fa-check"></i></div>';
+                    let crossIconTag = '<div class="icon cross"><i class="fas fa-times"></i></div>';
+
+
+                    //if user clicked on option
+                    function optionSelected(answer){
+                        clearInterval(counter); //clear counter
+                        clearInterval(counterLine); //clear counterLine
+                        let userAns = answer.textContent; //getting user selected option
+                        let correcAns = question[que_count].correct_answer; //getting correct answer from array
+                        const allOptions = option_list.children.length; //getting all option items
+
+                        if(userAns == correcAns){ //if user selected option is equal to array's correct answer
+                            userScore += 1; //upgrading score value with 1
+                            answer.classList.add("correct"); //adding green color to correct selected option
+                            answer.insertAdjacentHTML("beforeend", tickIconTag); //adding tick icon to correct selected option
+                        }else{
+                            answer.classList.add("incorrect"); //adding red color to correct selected option
+                            answer.insertAdjacentHTML("beforeend", crossIconTag); //adding cross icon to correct selected option
+
+                            for(i=0; i < allOptions; i++){
+                                if(option_list.children[i].textContent == correcAns){ //if there is an option which is matched to an array answer 
+                                    option_list.children[i].setAttribute("class", "option correct"); //adding green color to matched option
+                                    option_list.children[i].insertAdjacentHTML("beforeend", tickIconTag); //adding tick icon to matched option
+                                }
+                            }
+                        }
+                        
+                        for(i=0; i < allOptions; i++){
+                            option_list.children[i].classList.add("disabled"); //once user select an option then disabled all options
+                        }
+                        $('footer').show();
+                    }
+
+                    function showResult(){
+                        $('.result_box').show()                        
+                        const scoreText = result_box.querySelector(".score_text");
+                        //creating a new span tag and passing the user score number and total question number
+                        let scoreTag = '<span>You got <p>'+ userScore +'</p> out of <p>'+ question.length +'</p></span>';
+                        scoreText.innerHTML = scoreTag;  //adding new span tag inside score_Text
+                    }
+
+
+                    function startTimer(time) {
+                        counter = setInterval(timer, 1000);
+                        function timer(){
+                            timeCount.textContent = time; //changing the value of timeCount with time value
+                            time--; //decrement the time value
+                            if (time < 15) {
+                                $('.questions header').css('background-color', 'green');
+                            }
+                            if(time < 9){ //if timer is less than 9
+                                let addZero = timeCount.textContent; 
+                                timeCount.textContent = "0" + addZero; //add a 0 before time value
+                            }
+                            if(time < 0){ //if timer is less than 0
+                                clearInterval(counter); //clear counter
+                                timeText.textContent = "Time Off"; //change the time text to time off
+                                $('.questions header').css('background-color', 'red');
+                                $('.option').attr('disabled', true)
+                                $('footer').show();
+                                const allOptions = option_list.children.length; //getting all option items
+                                let correcAns = question[que_count].correct_answer; //getting correct answer from array
+                                for(i=0; i < allOptions; i++){
+                                    if(option_list.children[i].textContent == correcAns){ //if there is an option which is matched to an array answer
+                                        option_list.children[i].setAttribute("class", "option correct"); //adding green color to matched option
+                                        option_list.children[i].insertAdjacentHTML("beforeend", tickIconTag); //adding tick icon to matched option
+                                    }
+                                }
+                                for(i=0; i < allOptions; i++){
+                                    option_list.children[i].classList.add("disabled"); //once user select an option then disabled all options
+                                }
+                                next_btn.classList.add("show"); //show the next button if user selected any option
+                            }
+
+                        }
+                    }
+
+                    function startTimerLine(time){
+                        counterLine = setInterval(timer, 29);
+                        function timer(){
+                            time += 1; //upgrading time value with 1
+                            time_line.style.width = time + "px"; //increasing width of time_line with px by time value
+                            if(time > 549){ //if time value is greater than 549
+                                clearInterval(counterLine); //clear counterLine
+                            }
+                        }
+                    }
+
+                    function queCounter(index){
+                        //creating a new span tag and passing the question number and total question
+                        let totalQueCounTag = '<span>Question '+ index +' of '+ question.length +'</span>';
+                        bottom_ques_counter.innerHTML = totalQueCounTag;  //adding new span tag inside bottom_ques_counter
+                    }
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+				    console.log(textStatus);
+				    console.log(errorThrown);
+                }
+            });
+
+        })
+        // get user location
+        var x = document.getElementById("location");
+        var y = document.getElementById("latitude");
+        var z = document.getElementById("longitude");
+
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else { 
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            y.innerHTML = position.coords.latitude;
+            z.innerHTML = position.coords.longitude;
+
+            $.ajax({
+                url: "{% url 'exam_question:get_location' %}",
+                data: {
+                    'latitude': y.innerHTML,
+                    'longitude': z.innerHTML
+                },
+                dataType: 'json',
+                success: function(data) {
+                }
+            })
+        };
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    x.innerHTML = "User denied the request for Geolocation."
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    x.innerHTML = "Location information is unavailable."
+                    break;
+                case error.TIMEOUT:
+                    x.innerHTML = "The request to get user location timed out."
+                    break;
+                case error.UNKNOWN_ERROR:
+                    x.innerHTML = "An unknown error occurred."
+                    break;
+            }
+        }
+
+        getLocation();
+    })
+</script>
+{% endblock javascript %}

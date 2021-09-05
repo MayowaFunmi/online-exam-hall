@@ -29,18 +29,31 @@
 {% block javascript %}
     <script>
         $(document).ready(function() {
-            $("#id_age").attr({'readonly':'true', 'placeholder':'Press Enter Key After Entering Your Date Of Birth. Your Age Automatically Shows Here'});
-            var age = '';
-            $('#id_date_of_birth').datepicker({
-                dateFormat: 'yy-mm-dd',
-                onSelect: function(value, ui) {
-                    var today = new Date();
-                    age = today.getFullYear() - ui.selectedYear;
-                    $("#id_age").val(age);
-                },
-                changeMonth: true,
-                changeYear: true
-            })
-        })
+            $("#div_id_age").hide();
+            $("#id_date_of_birth").focusout(function () {
+                var userDate = new Date($("#id_date_of_birth").val());
+                if (userDate == 'Invalid Date') {
+                    alert('Date is invalid. Provide a valid date in YYYY-MM-DD format');
+                } else {
+                    let dd = String(userDate.getDate()).padStart(2, '0');
+                    let mm = String(userDate.getMonth() + 1).padStart(2, '0'); //January is 0!
+                    let yyyy = userDate.getFullYear();
+                    userDate = yyyy + '-' + mm + '-' + dd
+                    calculateAge(userDate);
+                }
+            });
+
+            function calculateAge(userDate) {
+                //console.log(userDate)
+                let ageDiff = Date.now() - new Date(userDate).getTime();
+                let ageDate = new Date(ageDiff);
+                let calcAge = Math.abs(ageDate.getUTCFullYear() - 1970)
+                //console.log(calcAge)
+                $("#id_age").attr('readonly', 'true');
+                //$("#id_age").append(calcAge)
+                $("#id_age").val(calcAge);
+                $("#div_id_age").show();
+            }
+        });
     </script>
 {% endblock javascript %}

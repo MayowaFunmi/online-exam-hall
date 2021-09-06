@@ -412,7 +412,7 @@ a.navbar-brand {
 #about-section {
     padding-top: 80px;
     padding-bottom: 80px;
-    //background: url(../images/parallax/bg-01.jpg) no-repeat;
+    /*background: url(../images/parallax/bg-01.jpg) no-repeat;*/
     background-size: cover;
     background-position: center;
 }
@@ -678,7 +678,7 @@ iframe {
 
 
 .call-to-action {
-    background: url(../images/parallax/call-to.jpg);
+    /*background: url(../images/parallax/call-to.jpg);*/
     background-attachment: fixed;
     background-size: cover;
     background-position: 50% 90%;
@@ -1084,7 +1084,7 @@ and (min-width : 551px){
 /*----------------------------------------------------------*/
 
 .fun-facts {
-    background: url(../images/parallax/bg-02.jpg);
+    /*background: url(../images/parallax/bg-02.jpg);*/
     background-attachment: fixed;
     background-size: cover;
     padding-top: 120px;
@@ -1204,7 +1204,7 @@ h3.pricing-title {
 
 
 #testimonial-section {
-    background: url(../images/parallax/call-to.jpg) no-repeat;
+    /*background: url(../images/parallax/call-to.jpg) no-repeat;*/
     background-size: cover;
     padding: 100px 0;
     color: #fff;
